@@ -34,7 +34,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'pixelize.App'
+    mainClass = 'com.melon.pixelize.App'
 }
 
 tasks.named('test') {

@@ -11,4 +11,4 @@ plugins {
 }
 
 rootProject.name = 'pixelize'
-include('app')
+include('main')

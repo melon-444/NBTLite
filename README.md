@@ -4,7 +4,7 @@
 
 ## 项目结构
 
-- `main/src/main/java/com/melon/pixelize/App.java`：主程序入口，包含图片处理核心逻辑。
+- `main/src/main/java/com/melon/pixelize/App.java`：主程序入口。
 - `ignore/input.png`：输入图片示例。
 - `ignore/preprocess.png`：输出图片示例。
 
@@ -32,9 +32,9 @@
 
 ## 主要代码说明
 
-- 主处理流程在 `App.main` 方法中实现。
-- 像素块颜色计算及映射在 `App.Color.getColorByRGBVal` 完成。
-- 颜色距离计算见 `App.Color.colorDistance`。
+- 主处理流程在 `ConvertTools.convertImageToPixelArt` 方法中实现。
+- 像素块颜色计算及映射在 `ConvertTools.Color.getColorByRGBVal` 完成。
+- 颜色距离计算见 `ConvertTools.Color.colorDistance`。
 
 ## 依赖
 

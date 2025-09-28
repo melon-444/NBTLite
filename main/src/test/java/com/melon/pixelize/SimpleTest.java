@@ -6,7 +6,7 @@ package com.melon.pixelize;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class AppTest {
+class SimpleTest {
     @Test void appHasAGreeting() {
         assertTrue( true );
     }

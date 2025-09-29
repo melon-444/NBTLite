@@ -6,9 +6,7 @@ import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.zip.GZIPOutputStream;
 
-import com.melon.pixelize.nbt.NBTCompound;
 import com.melon.pixelize.nbt.NBTElement;
-import com.melon.pixelize.nbt.NBTList;
 import com.melon.pixelize.nbt.NBTObjectBuilder;
 import com.melon.pixelize.nbt.io.NBTWriter;
 import com.melon.pixelize.utils.ConvertTools;
@@ -36,11 +34,19 @@ public class MCMapGenerator {
                             .Boolean("unlimitedTracking", false)
                             .Int("xCenter", 0)
                             .Int("zCenter",0)
-                            .directList(NBTObjectBuilder.buildList("banners").endList())
+                            .directList(NBTObjectBuilder.buildList("banners")
+                                .String("test1")
+                                .String("test2")
+                                .String("test3")
+                                .String("test4")
+                            .endList())
                             .endCompound()
                             )
                             .Int("DataVersion", 1343)
                             .end();
+
+                    
+                    System.out.println(NBTElement.asNBT(dat.toBytes()).toString());
                     File f = Path.of("ignore/map_" + index + ".dat").toFile();
                     if (!f.exists())
                         f.createNewFile();

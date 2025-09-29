@@ -3,9 +3,15 @@ package com.melon.pixelize.nbt;
 public class NBTByteArray extends NBTElement<byte[]> {
 
     public NBTByteArray(String keyName, byte[] payLoad) {
+        if(keyName == null)
+            keyName = "";
         this.keyName = keyName;
         this.keyNameLength = (short) keyName.getBytes().length;
         this.payLoad = payLoad;
+    }
+
+    public NBTByteArray(byte[] payLoad) {
+        this(null, payLoad);
     }
 
     @Override
@@ -22,6 +28,17 @@ public class NBTByteArray extends NBTElement<byte[]> {
         result[6 + keyNameLength] = (byte) ((0xFF) & length);
         System.arraycopy(payLoad, 0, result, 7 + keyNameLength, length);
         return result;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder(keyName.isEmpty()?"":keyName+":");
+        sb.append("[B;");
+        for(byte e:payLoad)
+            sb.append(e+",");
+        sb.deleteCharAt(sb.length()-1);
+        sb.append("]");
+        return sb.toString();
     }
 
 }

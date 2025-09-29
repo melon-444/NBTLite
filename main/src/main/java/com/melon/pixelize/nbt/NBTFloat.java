@@ -3,9 +3,15 @@ package com.melon.pixelize.nbt;
 public class NBTFloat extends NBTElement<Float> {
 
     public NBTFloat(String keyName, float value) {
+        if(keyName == null)
+            keyName = "";
         this.keyName = keyName;
         this.keyNameLength = (short) keyName.getBytes().length;
         this.payLoad = value;
+    }
+
+    public NBTFloat(float value) {
+        this(null, value);
     }
 
     @Override
@@ -21,6 +27,11 @@ public class NBTFloat extends NBTElement<Float> {
         result[5 + keyNameLength] = (byte) ((0xFF) & intBits >> 8);
         result[6 + keyNameLength] = (byte) ((0xFF) & intBits);
         return result;
+    }
+
+    @Override
+    public String toString(){
+        return super.toString()+"f";
     }
 
 }

@@ -3,9 +3,15 @@ package com.melon.pixelize.nbt;
 public class NBTDouble extends NBTElement<Double> {
 
     public NBTDouble(String keyName, double value) {
+        if(keyName == null)
+            keyName = "";
         this.keyName = keyName;
         this.keyNameLength = (short) keyName.getBytes().length;
         this.payLoad = value;
+    }
+
+    public NBTDouble(double value) {
+        this(null, value);
     }
 
     @Override
@@ -25,6 +31,11 @@ public class NBTDouble extends NBTElement<Double> {
         result[9 + keyNameLength] = (byte) ((0xFF) & longBits >> 8);
         result[10 + keyNameLength] = (byte) ((0xFF) & longBits);
         return result;
+    }
+
+    @Override
+    public String toString(){
+        return super.toString()+"d";
     }
 
 }

@@ -1,7 +1,5 @@
 package com.melon.pixelize.nbt;
 
-import java.util.Arrays;
-
 public class NBTObjectBuilder {
 
     private rootElement lastBuilt = null;
@@ -43,130 +41,192 @@ public class NBTObjectBuilder {
     }
 
     public NBTObjectBuilder Byte(String keyName, byte value) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         lastBuilt.addElement(new NBTByte(keyName, value));
         return this;
     }
 
     public NBTObjectBuilder Boolean(String keyName, boolean value) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         lastBuilt.addElement(new NBTBoolean(keyName, value));
         return this;
     }
 
     public NBTObjectBuilder Short(String keyName, short value) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         lastBuilt.addElement(new NBTShort(keyName, value));
         return this;
     }
 
     public NBTObjectBuilder Int(String keyName, int value) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         lastBuilt.addElement(new NBTInt(keyName, value));
         return this;
     }
 
     public NBTObjectBuilder Long(String keyName, long value) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         lastBuilt.addElement(new NBTLong(keyName, value));
         return this;
     }
 
     public NBTObjectBuilder Float(String keyName, float value) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         lastBuilt.addElement(new NBTFloat(keyName, value));
         return this;
     }
 
     public NBTObjectBuilder Double(String keyName, double value) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         lastBuilt.addElement(new NBTDouble(keyName, value));
         return this;
     }
 
     public NBTObjectBuilder String(String keyName, String value) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         lastBuilt.addElement(new NBTString(keyName, value));
         return this;
     }
 
     public NBTObjectBuilder ByteArray(String keyName, byte[] value) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         lastBuilt.addElement(new NBTByteArray(keyName, value));
         return this;
     }
 
     public NBTObjectBuilder IntArray(String keyName, int[] value) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         lastBuilt.addElement(new NBTIntArray(keyName, value));
         return this;
     }
 
     public NBTObjectBuilder LongArray(String keyName, long[] value) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         lastBuilt.addElement(new NBTLongArray(keyName, value));
         return this;
     }
 
     public NBTObjectBuilder Compound(String keyName, NBTElement<?>... values) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
-        NBTCompound value = new NBTCompound(keyName, Arrays.asList(values));
+        checkBuilt();
+        NBTCompound value = new NBTCompound(keyName, values);
         lastBuilt.addElement(value);
         return this;
     }
 
     public NBTObjectBuilder directCompound(NBTCompound value) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         value.isTransmitByNet(false);
         lastBuilt.addElement(value);
         return this;
     }
 
     public NBTObjectBuilder List(String keyName, NBTElement<?>... values) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         NBTList value = new NBTList(keyName, values);
         lastBuilt.addElement(value);
         return this;
     }
 
     public NBTObjectBuilder directList(NBTList value) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
+        lastBuilt.addElement(value);
+        return this;
+    }
+
+    public NBTObjectBuilder Byte(byte value) {
+        checkBuilt();
+        lastBuilt.addElement(new NBTByte(value));
+        return this;
+    }
+
+    public NBTObjectBuilder Boolean(boolean value) {
+        checkBuilt();
+        lastBuilt.addElement(new NBTBoolean(value));
+        return this;
+    }
+
+    public NBTObjectBuilder Short(short value) {
+        checkBuilt();
+        lastBuilt.addElement(new NBTShort(value));
+        return this;
+    }
+
+    public NBTObjectBuilder Int(int value) {
+        checkBuilt();
+        lastBuilt.addElement(new NBTInt(value));
+        return this;
+    }
+
+    public NBTObjectBuilder Long(long value) {
+        checkBuilt();
+        lastBuilt.addElement(new NBTLong(value));
+        return this;
+    }
+
+    public NBTObjectBuilder Float(float value) {
+        checkBuilt();
+        lastBuilt.addElement(new NBTFloat(value));
+        return this;
+    }
+
+    public NBTObjectBuilder Double(double value) {
+        checkBuilt();
+        lastBuilt.addElement(new NBTDouble(value));
+        return this;
+    }
+
+    public NBTObjectBuilder String(String value) {
+        checkBuilt();
+        lastBuilt.addElement(new NBTString(value));
+        return this;
+    }
+
+    public NBTObjectBuilder ByteArray(byte[] value) {
+        checkBuilt();
+        lastBuilt.addElement(new NBTByteArray(value));
+        return this;
+    }
+
+    public NBTObjectBuilder IntArray(int[] value) {
+        checkBuilt();
+        lastBuilt.addElement(new NBTIntArray(value));
+        return this;
+    }
+
+    public NBTObjectBuilder LongArray(long[] value) {
+        checkBuilt();
+        lastBuilt.addElement(new NBTLongArray(value));
+        return this;
+    }
+
+    public NBTObjectBuilder Compound(NBTElement<?>... values) {
+        checkBuilt();
+        NBTCompound value = new NBTCompound(values);
+        lastBuilt.addElement(value);
+        return this;
+    }
+
+    public NBTObjectBuilder List(NBTElement<?>... values) {
+        checkBuilt();
+        NBTList value = new NBTList(values);
         lastBuilt.addElement(value);
         return this;
     }
 
     public NBTObjectBuilder delete(String keyName) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         lastBuilt.removeElement(keyName);
         return this;
     }
 
     public NBTObjectBuilder delete(NBTElement<?> element) {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         lastBuilt.removeElement(element);
         return this;
     }
 
     public NBTElement<?> end() {
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         if (lastBuilt instanceof NBTCompound result) {
             lastBuilt = null;
             return result;
@@ -178,8 +238,7 @@ public class NBTObjectBuilder {
     }
 
     public NBTCompound endCompound(){
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         if (lastBuilt instanceof NBTCompound result) {
             lastBuilt = null;
             return result;
@@ -188,12 +247,16 @@ public class NBTObjectBuilder {
     }
 
     public NBTList endList(){
-        if (lastBuilt == null)
-            throw new IllegalStateException("Call build() before creating a new compound element");
+        checkBuilt();
         if (lastBuilt instanceof NBTList result) {
             lastBuilt = null;
             return result;
         }
         throw new IllegalStateException("The result element isn't a List Element.");
+    }
+
+    private void checkBuilt() {
+        if (lastBuilt == null)
+            throw new IllegalStateException("Call build() before creating a new compound element");
     }
 }

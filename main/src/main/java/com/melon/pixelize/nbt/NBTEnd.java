@@ -18,4 +18,9 @@ public class NBTEnd extends NBTElement<Void> {
         return new byte[] { NBTElement.Type.END };
     }
 
+    @Override
+    public String toString(){
+        return "";
+    }
+
 }

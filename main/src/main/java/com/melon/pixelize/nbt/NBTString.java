@@ -13,6 +13,12 @@ public class NBTString extends NBTElement<String> {
         this.payLoad = value;
     }
 
+    public NBTString(String value) {
+        this(null, value);
+    }
+
+    
+
     @Override
     public byte[] toBytes() {
         byte[] strBytes = payLoad.getBytes();
@@ -26,6 +32,11 @@ public class NBTString extends NBTElement<String> {
         result[4 + keyNameLength] = (byte) ((0xFF) & strLength);
         System.arraycopy(strBytes, 0, result, 5 + keyNameLength, strLength);
         return result;
+    }
+
+    @Override
+    public String toString(){
+        return "\""+payLoad+"\"";
     }
     
 }

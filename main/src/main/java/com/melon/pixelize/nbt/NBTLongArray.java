@@ -3,9 +3,15 @@ package com.melon.pixelize.nbt;
 public class NBTLongArray extends NBTElement<long[]> {
 
     public NBTLongArray(String keyName, long[] payLoad) {
+        if(keyName == null)
+            keyName = "";
         this.keyName = keyName;
         this.keyNameLength = (short) keyName.getBytes().length;
         this.payLoad = payLoad;
+    }
+
+    public NBTLongArray(long[] value) {
+        this(null, value);
     }
 
     @Override
@@ -33,6 +39,17 @@ public class NBTLongArray extends NBTElement<long[]> {
             result[baseIndex + 7] = (byte) ((0xFF) & value);
         }
         return result;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder(keyName.isEmpty()?"":keyName+":");
+        sb.append("[L;");
+        for(long e:payLoad)
+            sb.append(e+",");
+        sb.deleteCharAt(sb.length()-1);
+        sb.append("]");
+        return sb.toString();
     }
 
 }

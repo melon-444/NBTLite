@@ -3,9 +3,15 @@ package com.melon.pixelize.nbt;
 public class NBTLong extends NBTElement<Long> {
 
     public NBTLong(String keyName, long value) {
+        if(keyName == null)
+            keyName = "";
         this.keyName = keyName;
         this.keyNameLength = (short) keyName.getBytes().length;
         this.payLoad = value;
+    }
+
+    public NBTLong(long value) {
+        this(null, value);
     }
 
     @Override
@@ -24,6 +30,11 @@ public class NBTLong extends NBTElement<Long> {
         result[9 + keyNameLength] = (byte) ((0xFF) & payLoad >> 8);
         result[10 + keyNameLength] = (byte) ((0xFF) & payLoad);
         return result;
+    }
+
+    @Override
+    public String toString(){
+        return super.toString()+"l";
     }
 
 }

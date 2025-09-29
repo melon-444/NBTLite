@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class NBTCompound extends NBTElement<List<NBTElement<?>>> {
+public class NBTCompound extends NBTElement<List<NBTElement<?>>> implements rootElement {
 
     private boolean trasmitByNet = false;
 

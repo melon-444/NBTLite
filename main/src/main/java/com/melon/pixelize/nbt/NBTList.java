@@ -2,34 +2,100 @@ package com.melon.pixelize.nbt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
-public class NBTList extends NBTElement<List<NBTElement<?>>> {
+public class NBTList extends NBTElement<List<NBTElement<?>>> implements rootElement {
 
-    private int type = 0;
+    private byte type = 0;
+    
+    private void checkType(){
+        type = payLoad != null && payLoad.size() > 0 ? payLoad.get(0).getType() : 0;
+    }
 
     public NBTList(String keyName, List<NBTElement<?>> value) {
         this.keyName = keyName;
         this.keyNameLength = (short) keyName.getBytes().length;
-        this.payLoad = value;
-        type = value != null && value.size() > 0 ? value.get(0).getType() : 0;
+
+        boolean legalPayload = true;
+        for (NBTElement<?> element : value)
+            element.setKeyName("");
+        for (NBTElement<?> element : value){
+            if(element.getType()!=value.get(0).getType())
+                legalPayload = false;
+        }
+            
+        if (legalPayload) {
+            this.payLoad = value;
+            checkType();
+        } else
+            throw new IllegalArgumentException("The element type of a list should keep same.");
     }
 
     public NBTList(String keyName, NBTElement<?>[] value) {
         this.keyName = keyName;
         this.keyNameLength = (short) keyName.getBytes().length;
-        this.payLoad = Arrays.asList(value);
-        type = value != null && value.length > 0 ? value[0].getType() : 0;
+        boolean legalPayload = true;
+        for (NBTElement<?> element : value){
+            if(element.getType()!=value[0].getType())
+                legalPayload = false;
+        }
+
+        if (legalPayload) {
+            this.payLoad = Arrays.asList(value);
+            checkType();
+        } else
+            throw new IllegalArgumentException("The element type of a list should keep same.");
     }
 
     public NBTList(String keyName) {
-        this(keyName,new ArrayList<>());
+        this(keyName, new ArrayList<>());
     }
 
     @Override
     public void setPayLoad(List<NBTElement<?>> payLoad) {
-        this.payLoad = payLoad;
-        type = payLoad != null && payLoad.size() > 0 ? payLoad.get(0).getType() : 0;
+        boolean legalPayload = true;
+        for (NBTElement<?> element : payLoad){
+            if(element.getType()!=payLoad.get(0).getType())
+                legalPayload = false;
+        }
+            
+        if (legalPayload) {
+            this.payLoad = payLoad;
+            checkType();
+        } else
+            throw new IllegalArgumentException("The element type of a list should keep same.");
+
+    }
+
+    public void addElement(NBTElement<?> element) {
+        if (payLoad.size() == 0 || payLoad.get(0).getType() == element.getType())
+            {
+                this.payLoad.add(element);
+                checkType();
+            }
+        else
+            throw new IllegalArgumentException("The element type of a list should keep same.");
+    }
+
+    public boolean removeElement(NBTElement<?> element) {
+        boolean success = this.payLoad.remove(element);
+        checkType();
+        return success;
+        
+    }
+
+    public boolean removeElement(String keyname) {
+        Iterator<NBTElement<?>> it = payLoad.iterator();
+        while (it.hasNext()) {
+            NBTElement<?> element = it.next();
+            if (element.getKeyName().equals(keyname)) {
+                it.remove();
+                checkType();
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -57,8 +123,10 @@ public class NBTList extends NBTElement<List<NBTElement<?>>> {
         result[index++] = (byte) ((0xFF) & payLoad.size());
         for (NBTElement<?> element : payLoad) {
             byte[] elementBytes = element.toBytes();
-            System.arraycopy(elementBytes, 0, result, index, elementBytes.length);
-            index += elementBytes.length;
+            int offset = NBTElement.elementPayLoadOffset(elementBytes, 0);
+            int actual_len = elementBytes.length-offset;
+            System.arraycopy(elementBytes, offset, result, index, actual_len);//only payload
+            index += actual_len;
         }
         return result;
     }

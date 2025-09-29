@@ -121,21 +121,21 @@ public class ConvertTools {
                 final int start = index * pixH / THREAD_CNT;
                 final int end = (index + 1) * pixH / THREAD_CNT;
                 pool.submit(() -> {
-                    int j = 0, x = 0;
+                    int j = 0, y = 0;
                     try {
-                        for (x = start; x < end; x++)
+                        for (y = start; y < end; y++)
                             for (j = 0; j < tpixW; j++) {
-                                for (int clr : image.getRGB(((w % pc1) / 2) + j * pc1, ((h % pc1) / 2) + x * pc1, pc1,
+                                for (int clr : image.getRGB(((w % pc1) / 2) + j * pc1, ((h % pc1) / 2) + y * pc1, pc1,
                                         pc1, null, 0, pc1)) {
                                     for (int type = 0; type < 3; type++)
-                                        colorsumRGB[type][j][x] += (clr >> (8 * (2 - type))) & 0xff;
+                                        colorsumRGB[type][j][y] += (clr >> (8 * (2 - type))) & 0xff;
                                 }
                                 for (int i = 0; i < 3; i++)
-                                    colorsumRGB[i][j][x] /= (pc1 * pc1);
+                                    colorsumRGB[i][j][y] /= (pc1 * pc1);
                             }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        System.err.println("error at (" + j + "," + x + ")");
+                        System.err.println("error at (" + j + "," + y + ")");
                     }
                 });
                 index++;

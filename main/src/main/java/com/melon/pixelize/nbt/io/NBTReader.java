@@ -18,7 +18,6 @@ public class NBTReader extends InputStream {
     }
 
     public NBTElement<?> readNBTElement() throws IOException{
-        
-        return null;
+        return NBTElement.asNBT(gzipIn.readAllBytes());
     }
 }

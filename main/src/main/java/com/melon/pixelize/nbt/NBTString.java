@@ -6,6 +6,8 @@ package com.melon.pixelize.nbt;
 public class NBTString extends NBTElement<String> {
 
     public NBTString(String keyName, String value) {
+        if(keyName == null)
+            keyName = "";
         this.keyName = keyName;
         this.keyNameLength = (short) keyName.length();
         this.payLoad = value;

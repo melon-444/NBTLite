@@ -381,15 +381,7 @@ public enum MCMapColor implements ColorEnumTemplate {
     public static MCMapColor getColorByRGBVal(int color) {
         int r = (color >> 16) & 0xff, g = (color >> 8) & 0xff, b = color & 0xff;
 
-        int similarIndex = r * r + g * g + b * b;
-        /*
-         * I mean that
-         * 
-         * int similarIndex =
-         * Math.abs(r - Color.black.getR())^2 +
-         * Math.abs(g - Color.black.getG())^2 +
-         * Math.abs(b - Color.black.getB())^2;
-         */
+        int similarIndex = ColorEnumTemplate.colorDistance(r, g, b, MCMapColor.COLOR_BLACK_LOWEST);
 
         MCMapColor candidateColor = MCMapColor.COLOR_BLACK_LOWEST;
         for (MCMapColor clr : MCMapColor.values()) {

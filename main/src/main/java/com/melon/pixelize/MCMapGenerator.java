@@ -24,7 +24,7 @@ public class MCMapGenerator {
                     System.out.println("Input image path in ignore/ :");
                     byte[] target = ConvertTools.convertImageToMCMapArt(Path.of("ignore/"+sc.nextLine().trim()), 5);
                     NBTElement<?> dat =
-                    NBTObjectBuilder.build("")
+                    NBTObjectBuilder.build()
                             .directCompound(
                             NBTObjectBuilder.build("data")
                             .List("banners", new NBTCompound[0])

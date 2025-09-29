@@ -10,8 +10,8 @@ import java.util.concurrent.Executors;
 
 public class ConvertTools {
 
-    public static void convertImageToPixelArt(Path input, Path output, int pixHMost, int pixWMost,int THREAD_CNT) {
-        int pixelContains=1;
+    public static void convertImageToPixelArt(Path input, Path output, int pixHMost, int pixWMost, int THREAD_CNT) {
+        int pixelContains = 2;
         try {
             BufferedImage image = ImageIO.read(input.toFile());
             int h = image.getHeight(), w = image.getWidth();
@@ -89,7 +89,7 @@ public class ConvertTools {
         }
     }
 
-    public static byte[] convertImageToMCMapArt(Path input,int THREAD_CNT) {
+    public static byte[] convertImageToMCMapArt(Path input, int THREAD_CNT) {
         int pixHMost = 128, pixWMost = 128, pixelContains = 1;
         try {
             BufferedImage image = ImageIO.read(input.toFile());
@@ -151,13 +151,20 @@ public class ConvertTools {
             }
 
             byte[] mapData = new byte[16384];
-            index = 0;
             for (int i = 0; i < pixW; i++)
                 for (int j = 0; j < pixH; j++) {
                     MCMapColor clr = MCMapColor.getColorByRGBVal(
                             (colorsumRGB[0][i][j] << 16) | (colorsumRGB[1][i][j] << 8) | colorsumRGB[2][i][j]);
-                    mapData[index++] = MCMapColor.getMapColor(clr.getBase(), clr.getModifier());
+                    mapData[i + 128 * j] = MCMapColor.getMapColor(clr.getBase(), clr.getModifier());
                 }
+                //test code
+            for (byte b : mapData)
+                if ((b & 0b11111100) == 0)
+                    System.out.println(
+                            "warning: the base color in mapData is unnormally set as 0, it should be non-zero");
+            System.out.println("pixel wide: " + pixW + ", pixel high: " + pixH);
+            System.out.println("image wide: " + w + ", image high: " + h);
+            System.out.println("pixelContains: " + pc1);
 
             return mapData;
 

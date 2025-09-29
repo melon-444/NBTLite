@@ -4,7 +4,7 @@ public class NBTLongArray extends NBTElement<long[]> {
 
     public NBTLongArray(String keyName, long[] payLoad) {
         this.keyName = keyName;
-        this.keyNameLength = (short)keyName.getBytes().length;
+        this.keyNameLength = (short) keyName.getBytes().length;
         this.payLoad = payLoad;
     }
 
@@ -13,26 +13,26 @@ public class NBTLongArray extends NBTElement<long[]> {
         int arrayLength = payLoad.length;
         byte[] result = new byte[3 + keyNameLength + 4 + (8 * arrayLength)];
         result[0] = NBTElement.Type.LONG_ARRAY;
-        result[1] = (byte)((0xFF)&keyNameLength>>8);
-        result[2] = (byte)((0xFF)&keyNameLength);
+        result[1] = (byte) ((0xFF) & keyNameLength >> 8);
+        result[2] = (byte) ((0xFF) & keyNameLength);
         System.arraycopy(keyName.getBytes(), 0, result, 3, keyNameLength);
-        result[3 + keyNameLength] = (byte)((0xFF)&arrayLength>>24);
-        result[4 + keyNameLength] = (byte)((0xFF)&arrayLength>>16);
-        result[5 + keyNameLength] = (byte)((0xFF)&arrayLength>>8);
-        result[6 + keyNameLength] = (byte)((0xFF)&arrayLength);
-        for(int i = 0; i < arrayLength; i++) {
+        result[3 + keyNameLength] = (byte) ((0xFF) & arrayLength >> 24);
+        result[4 + keyNameLength] = (byte) ((0xFF) & arrayLength >> 16);
+        result[5 + keyNameLength] = (byte) ((0xFF) & arrayLength >> 8);
+        result[6 + keyNameLength] = (byte) ((0xFF) & arrayLength);
+        for (int i = 0; i < arrayLength; i++) {
             long value = payLoad[i];
             int baseIndex = 7 + keyNameLength + (i * 8);
-            result[baseIndex] = (byte)((0xFF)&value>>56);
-            result[baseIndex + 1] = (byte)((0xFF)&value>>48);
-            result[baseIndex + 2] = (byte)((0xFF)&value>>40);
-            result[baseIndex + 3] = (byte)((0xFF)&value>>32);
-            result[baseIndex + 4] = (byte)((0xFF)&value>>24);
-            result[baseIndex + 5] = (byte)((0xFF)&value>>16);
-            result[baseIndex + 6] = (byte)((0xFF)&value>>8);
-            result[baseIndex + 7] = (byte)((0xFF)&value);
+            result[baseIndex] = (byte) ((0xFF) & value >> 56);
+            result[baseIndex + 1] = (byte) ((0xFF) & value >> 48);
+            result[baseIndex + 2] = (byte) ((0xFF) & value >> 40);
+            result[baseIndex + 3] = (byte) ((0xFF) & value >> 32);
+            result[baseIndex + 4] = (byte) ((0xFF) & value >> 24);
+            result[baseIndex + 5] = (byte) ((0xFF) & value >> 16);
+            result[baseIndex + 6] = (byte) ((0xFF) & value >> 8);
+            result[baseIndex + 7] = (byte) ((0xFF) & value);
         }
         return result;
     }
-    
+
 }

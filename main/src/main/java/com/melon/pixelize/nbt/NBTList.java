@@ -1,20 +1,35 @@
 package com.melon.pixelize.nbt;
 
-public class NBTList extends NBTElement<NBTElement<?>[]> {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class NBTList extends NBTElement<List<NBTElement<?>>> {
 
     private int type = 0;
+
+    public NBTList(String keyName, List<NBTElement<?>> value) {
+        this.keyName = keyName;
+        this.keyNameLength = (short) keyName.getBytes().length;
+        this.payLoad = value;
+        type = value != null && value.size() > 0 ? value.get(0).getType() : 0;
+    }
 
     public NBTList(String keyName, NBTElement<?>[] value) {
         this.keyName = keyName;
         this.keyNameLength = (short) keyName.getBytes().length;
-        this.payLoad = value;
+        this.payLoad = Arrays.asList(value);
         type = value != null && value.length > 0 ? value[0].getType() : 0;
     }
 
+    public NBTList(String keyName) {
+        this(keyName,new ArrayList<>());
+    }
+
     @Override
-    public void setPayLoad(NBTElement<?>[] payLoad) {
+    public void setPayLoad(List<NBTElement<?>> payLoad) {
         this.payLoad = payLoad;
-        type = payLoad != null && payLoad.length > 0 ? payLoad[0].getType() : 0;
+        type = payLoad != null && payLoad.size() > 0 ? payLoad.get(0).getType() : 0;
     }
 
     @Override
@@ -30,16 +45,16 @@ public class NBTList extends NBTElement<NBTElement<?>[]> {
         result[2] = (byte) ((0xFF) & keyNameLength);
         System.arraycopy(keyName.getBytes(), 0, result, 3, keyNameLength);
         int index = 3 + keyNameLength;
-        if (payLoad != null && payLoad.length > 0) {
+        if (payLoad != null && payLoad.size() > 0) {
             result[index++] = (byte) ((0xFF) & type);
         } else {
             result[index++] = NBTEnd.getEnd(); // Empty list
             return result;
         }
-        result[index++] = (byte) ((0xFF) & (payLoad.length >> 24));
-        result[index++] = (byte) ((0xFF) & (payLoad.length >> 16));
-        result[index++] = (byte) ((0xFF) & (payLoad.length >> 8));
-        result[index++] = (byte) ((0xFF) & payLoad.length);
+        result[index++] = (byte) ((0xFF) & (payLoad.size() >> 24));
+        result[index++] = (byte) ((0xFF) & (payLoad.size() >> 16));
+        result[index++] = (byte) ((0xFF) & (payLoad.size() >> 8));
+        result[index++] = (byte) ((0xFF) & payLoad.size());
         for (NBTElement<?> element : payLoad) {
             byte[] elementBytes = element.toBytes();
             System.arraycopy(elementBytes, 0, result, index, elementBytes.length);

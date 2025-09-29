@@ -1,8 +1,8 @@
 package com.melon.pixelize.nbt;
 
-
 /**
  * This is a recoding of Minecraft Java Edition Named Binary Tag (NBT) element
+ * 
  * @param <T> The type of the payload
  * @author melon_444
  */
@@ -17,7 +17,7 @@ public abstract class NBTElement<T> {
 
     public abstract byte[] toBytes();
 
-    public int getType(){
+    public int getType() {
         return toBytes()[0];
     }
 
@@ -27,7 +27,7 @@ public abstract class NBTElement<T> {
 
     public void setKeyName(String keyName) {
         this.keyName = keyName;
-        keyNameLength = (short)keyName.getBytes().length;
+        keyNameLength = (short) keyName.getBytes().length;
     }
 
     public T getPayLoad() {

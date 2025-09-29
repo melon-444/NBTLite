@@ -13,14 +13,14 @@ public class NBTFloat extends NBTElement<Float> {
         int intBits = Float.floatToIntBits(payLoad);
         byte[] result = new byte[3 + 4 + keyNameLength];
         result[0] = NBTElement.Type.FLOAT;
-        result[1] = (byte)((0xFF)&keyNameLength>>8);
-        result[2] = (byte)((0xFF)&keyNameLength);
+        result[1] = (byte) ((0xFF) & keyNameLength >> 8);
+        result[2] = (byte) ((0xFF) & keyNameLength);
         System.arraycopy(keyName.getBytes(), 0, result, 3, keyNameLength);
-        result[3 + keyNameLength] = (byte)((0xFF)&intBits>>24);
-        result[4 + keyNameLength] = (byte)((0xFF)&intBits>>16);
-        result[5 + keyNameLength] = (byte)((0xFF)&intBits>>8);
-        result[6 + keyNameLength] = (byte)((0xFF)&intBits);
+        result[3 + keyNameLength] = (byte) ((0xFF) & intBits >> 24);
+        result[4 + keyNameLength] = (byte) ((0xFF) & intBits >> 16);
+        result[5 + keyNameLength] = (byte) ((0xFF) & intBits >> 8);
+        result[6 + keyNameLength] = (byte) ((0xFF) & intBits);
         return result;
     }
-    
+
 }

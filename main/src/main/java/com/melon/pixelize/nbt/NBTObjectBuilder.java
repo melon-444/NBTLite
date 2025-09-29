@@ -24,7 +24,6 @@ public class NBTObjectBuilder {
      */
     public static NBTObjectBuilder build(){
         NBTObjectBuilder b = build("");
-            b.lastBuilt.isTransmitByNet(true);
         return b;
     }
 

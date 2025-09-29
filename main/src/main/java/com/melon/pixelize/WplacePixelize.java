@@ -16,9 +16,16 @@ public class WplacePixelize {
                     int index = 0;
                     while (Path.of("ignore/preprocess" + (index == 0 ? "" : index) + ".png").toFile().exists())
                         index++;
-                    System.out.println("Input image path in ignore/ and pixel Wide and Height:");
-                    ConvertTools.convertImageToPixelArt(Path.of("ignore/"+sc.nextLine().trim()),
-                            Path.of("ignore/preprocess" + (index == 0 ? "" : index) + ".png"), pixHMost=sc.nextInt(), pixWMost=sc.nextInt(),
+                    System.out.println("Input image path in ignore/:");
+                    String file = sc.next().trim();
+                    System.out.println("Input pixel Wide :");
+                    pixHMost=sc.nextInt();
+                    System.out.println("Input pixel Height:");
+                    pixWMost=sc.nextInt();
+
+
+                    ConvertTools.convertImageToPixelArt(Path.of("ignore/"+file),
+                            Path.of("ignore/preprocess" + (index == 0 ? "" : index) + ".png"), pixHMost, pixWMost,
                             THREAD_CNT);
                 }
 

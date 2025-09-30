@@ -142,7 +142,8 @@ public class NBTList extends NBTElement<List<NBTElement<?>>> implements rootElem
         sb.append("[");
         for(NBTElement<?> e:payLoad)
             sb.append(e+",");
-        sb.deleteCharAt(sb.length()-1);
+        if(!payLoad.isEmpty())
+            sb.deleteCharAt(sb.length()-1);
         sb.append("]");
         return sb.toString();
     }

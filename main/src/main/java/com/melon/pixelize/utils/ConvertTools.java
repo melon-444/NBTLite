@@ -157,14 +157,14 @@ public class ConvertTools {
                             (colorsumRGB[0][i][j] << 16) | (colorsumRGB[1][i][j] << 8) | colorsumRGB[2][i][j]);
                     mapData[i + 128 * j] = MCMapColor.getMapColor(clr.getBase(), clr.getModifier());
                 }
-                //test code
-            for (byte b : mapData)
-                if ((b & 0b11111100) == 0)
-                    System.out.println(
-                            "warning: the base color in mapData is unnormally set as 0, it should be non-zero");
-            System.out.println("pixel wide: " + pixW + ", pixel high: " + pixH);
-            System.out.println("image wide: " + w + ", image high: " + h);
-            System.out.println("pixelContains: " + pc1);
+            //     //TODO:delete test code
+            // for (byte b : mapData)
+            //     if ((b & 0b11111100) == 0)
+            //         System.out.println(
+            //                 "warning: the base color in mapData is unnormally set as 0, it should be non-zero");
+            // System.out.println("pixel wide: " + pixW + ", pixel high: " + pixH);
+            // System.out.println("image wide: " + w + ", image high: " + h);
+            // System.out.println("pixelContains: " + pc1);
 
             return mapData;
 

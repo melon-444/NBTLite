@@ -14,7 +14,8 @@ import org.junit.jupiter.api.Test;
 import com.melon.pixelize.nbt.NBTCompound;
 import com.melon.pixelize.nbt.NBTElement;
 import com.melon.pixelize.nbt.NBTObjectBuilder;
-import com.melon.pixelize.nbt.io.NBTWriter;
+import com.melon.pixelize.nbt.io.GZipNBTWriter;
+
 import com.melon.pixelize.utils.ConvertTools;
 
 public class MapGenTest {
@@ -50,7 +51,7 @@ public class MapGenTest {
                     File f = Path.of("../ignore/map_" + index + ".dat").toFile();
                     if (!f.exists())
                         f.createNewFile();
-                    NBTWriter writer = new NBTWriter(new GZIPOutputStream(new FileOutputStream(f)));
+                    GZipNBTWriter writer = new GZipNBTWriter(new GZIPOutputStream(new FileOutputStream(f)));
                     writer.write(dat);
                     writer.close();
                     once = false;

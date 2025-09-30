@@ -58,7 +58,7 @@ public class NBTDecoder {
                 for (int i = 0; i < len; i++) {
                     elements.add(decodePayload(elemType, "", buf));
                 }
-                return new NBTList(key, elements.toArray(new NBTElement<?>[0]));
+                return new NBTList(key, elements);
             }
             case Type.COMPOUND: {
                 List<NBTElement<?>> elements = new ArrayList<>();

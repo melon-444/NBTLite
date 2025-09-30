@@ -41,11 +41,15 @@ public abstract class NBTElement<T> {
     /**
      * Convert a byte array to an NBT element.
      * 
-     * @param bytes The byte array to convert.
+     * @param NBTbytes The byte array to convert.
      * @return The NBT element.
      */
-    public static NBTElement<?> asNBT(byte[] bytes) {
-        return NBTDecoder.decode(ByteBuffer.wrap(bytes));
+    public static NBTElement<?> asNBT(byte[] NBTbytes) {
+        return NBTDecoder.decode(ByteBuffer.wrap(NBTbytes));
+    }
+
+    public static NBTElement<?> asNBT(String SNBT) {
+        return SNBTDecoder.decode(SNBT);
     }
 
     public byte getType() {
@@ -76,6 +80,7 @@ public abstract class NBTElement<T> {
     public static class Type {
         public static final byte END = 0;
         public static final byte BYTE = 1;
+        public static final byte BOOLEAN = BYTE;
         public static final byte SHORT = 2;
         public static final byte INT = 3;
         public static final byte LONG = 4;

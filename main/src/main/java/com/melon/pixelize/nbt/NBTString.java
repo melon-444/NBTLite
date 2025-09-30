@@ -36,7 +36,7 @@ public class NBTString extends NBTElement<String> {
 
     @Override
     public String toString(){
-        return "\""+payLoad+"\"";
+        return keyName.isEmpty()?payLoad.toString():keyName+":"+"\""+payLoad+"\"";
     }
     
 }

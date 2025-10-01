@@ -41,7 +41,6 @@ public class MCMapGenerator {
                             .endCompound()
                             )
                             .Int("DataVersion", 1343)
-                            .String("test","\"\"testnest\"\"")
                             .end();
                     System.out.println(dat.toString());
 

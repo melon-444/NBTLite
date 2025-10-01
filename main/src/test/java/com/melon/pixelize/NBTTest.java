@@ -40,6 +40,7 @@ public class NBTTest {
                 .String("nested","test")
                 .endCompound()
             )
+            .String("l","\"\"\"test nested string\"\"\"")
             .endCompound();
             System.err.println("------direct------");
         System.err.println(test.toString());

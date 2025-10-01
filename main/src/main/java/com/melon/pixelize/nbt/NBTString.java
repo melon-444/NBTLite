@@ -53,6 +53,7 @@ public class NBTString extends NBTElement<String> {
         if(QuoteCounter%2!=0)
             throw new IllegalStateException("Quote in the string is unclosed!");
         QuoteCounter/=2;
+        int addOffset = 0;
 
         for(int i=0;i<QuoteCounter;i++){
             int neededRSlash;
@@ -67,10 +68,14 @@ public class NBTString extends NBTElement<String> {
                     neededRSlash = 1+(int)Math.pow(2,i-1);
                     break;
             }
+            StringBuilder buf = new StringBuilder();
             for(int j=0;j<neededRSlash;j++){
-                sb.insert(quoteIndex.get(i), "\\");
-                sb.insert(quoteIndex.get(quoteIndex.size()-i), "\\");
+                buf.append("\\");
             }
+
+            sb.insert(addOffset+quoteIndex.get(i), buf.toString());
+            sb.insert(neededRSlash+addOffset+quoteIndex.get(quoteIndex.size()-1-i), buf.toString());
+                addOffset += neededRSlash;
         }
 
         if(QuoteCounter==0)

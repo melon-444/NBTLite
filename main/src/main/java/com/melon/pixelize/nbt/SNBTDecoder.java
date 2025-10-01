@@ -219,7 +219,6 @@ public class SNBTDecoder {
                 String Ori = SNBTPayload;
                 Ori = Ori.substring(3);
                 Ori = Ori.substring(0, Ori.length() - 1);
-                System.out.println(Ori);//TODO:delete
                 String[] bytearrS = Ori.split(",");
                 int len = bytearrS.length;
                 byte[] arr = new byte[len];

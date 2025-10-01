@@ -1,4 +1,7 @@
 package com.melon.pixelize.nbt;
+
+import java.util.ArrayList;
+
 /**
  * Use Big Endian byte order and modified UTF-8 encoding (same as DataOutputStream.writeUTF)
  * for strings.
@@ -36,7 +39,44 @@ public class NBTString extends NBTElement<String> {
 
     @Override
     public String toString(){
-        return keyName.isEmpty()?payLoad.toString():keyName+":"+"\""+payLoad+"\"";
+        StringBuilder sb = new StringBuilder(payLoad);
+        
+        ArrayList<Integer> quoteIndex = new ArrayList<>();
+
+        char[] payloadArr= payLoad.toCharArray();
+        for(int i = 0;i<payloadArr.length;i++){
+            if(payloadArr[i]=='"'&&(i==0||payloadArr[i-1]!='\\'))
+                quoteIndex.add(i);
+        }
+
+        int QuoteCounter = quoteIndex.size();
+        if(QuoteCounter%2!=0)
+            throw new IllegalStateException("Quote in the string is unclosed!");
+        QuoteCounter/=2;
+
+        for(int i=0;i<QuoteCounter;i++){
+            int neededRSlash;
+            switch (i) {
+                case 0:
+                    neededRSlash = 0;
+                    break;
+                case 1:
+                    neededRSlash = 1;
+                    break;
+                default:
+                    neededRSlash = 1+(int)Math.pow(2,i-1);
+                    break;
+            }
+            for(int j=0;j<neededRSlash;j++){
+                sb.insert(quoteIndex.get(i), "\\");
+                sb.insert(quoteIndex.get(quoteIndex.size()-i), "\\");
+            }
+        }
+
+        if(QuoteCounter==0)
+            return keyName.isEmpty()?"\""+sb+"\"":keyName+":"+"\""+sb+"\"";
+        else return keyName.isEmpty()?"\'"+sb+"\'":keyName+":"+"\'"+sb+"\'";
     }
+
     
 }

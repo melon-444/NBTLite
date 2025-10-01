@@ -140,9 +140,10 @@ public class NBTList extends NBTElement<List<NBTElement<?>>> implements rootElem
     public String toString(){
         StringBuilder sb = new StringBuilder(keyName.isEmpty()?"":keyName+":");
         sb.append("[");
+        if(payLoad!=null)
         for(NBTElement<?> e:payLoad)
             sb.append(e+",");
-        if(!payLoad.isEmpty())
+        if(payLoad!=null&&!payLoad.isEmpty())
             sb.deleteCharAt(sb.length()-1);
         sb.append("]");
         return sb.toString();

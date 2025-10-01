@@ -70,10 +70,10 @@ public class SNBTDecoder {
                 return Type.LIST;
         } else if (c == '\"' || c == '\'') {
             return Type.STRING;
-        } else if (Character.isDigit(c) || c == '-' || c == '+') {
+        } else if (Character.isDigit(c)|| c == '.' || c == '-' || c == '+') {
             int endIndex = payLoadIndex;
             do {
-                if (Character.isDigit(c) || c == '-' || c == '+') {
+                if (Character.isDigit(c)|| c == '.' || c == '-' || c == '+') {
                     endIndex++;
                 } else if (c != ',' && c != '}' && c != ']') {
                     switch (c) {
@@ -93,7 +93,7 @@ public class SNBTDecoder {
                         case 'B':
                             return Type.BYTE;
                         default:
-                            throw new IllegalArgumentException("Unsupported NBT type " + c);
+                            throw new IllegalArgumentException("Unsupported NBT type \"" + c+"\" at index "+endIndex);
                     }
                 }
                 c = SNBT.charAt(endIndex);
@@ -103,7 +103,7 @@ public class SNBTDecoder {
                 || SNBT.startsWith("false", payLoadIndex)) {
             return Type.BOOLEAN;
         } else
-            throw new IllegalArgumentException("Unsupported NBT type " + c);
+            throw new IllegalArgumentException("Unsupported NBT type \"" + c+"\" at index "+payLoadIndex);
     }
 
     /*
@@ -141,11 +141,11 @@ public class SNBTDecoder {
                 c = SNBT.charAt(++payLoadIndex);
             } while ((c != '"' && c != '\'') || ((c == '"' || c == '\'') && SNBT.charAt(payLoadIndex - 1) == '\\'));
             return SNBT.substring(startIndex, payLoadIndex + 1);
-        } else if (Character.isDigit(c) || c == '-' || c == '+') {
+        } else if (Character.isDigit(c)|| c == '.'  || c == '-' || c == '+') {
             int endIndex = payLoadIndex;
             do {
                 c = SNBT.charAt(endIndex);
-                if (Character.isDigit(c) || c == '-' || c == '+') {
+                if (Character.isDigit(c)|| c == '.'  || c == '-' || c == '+') {
                     endIndex++;
                 } else if (c != ',' && c != '}' && c != ']') {
                     return SNBT.substring(payLoadIndex, endIndex + 1);
@@ -159,7 +159,7 @@ public class SNBTDecoder {
             else
                 return "false";
         } else
-            throw new IllegalArgumentException("Unsupported NBT type");
+            throw new IllegalArgumentException("Unsupported NBT type \"" + c+"\" at index "+payLoadIndex);
     }
 
     private static NBTElement<?> decodePayload(byte type, String key, String SNBTPayload) {
@@ -208,7 +208,6 @@ public class SNBTDecoder {
                     String nestedKeyName = getKeyName(Ori, 0);
                     String nestedPayLoad = getPayLoad(Ori, getPayLoadIndex(nestedKeyName));
                     byte nestedType = getType(Ori, getPayLoadIndex(nestedKeyName));
-                    System.out.println(SNBTPayload +"\n and "+Ori.length());//TODO:delete
                     Ori = Ori.substring(getPayLoadIndex(nestedKeyName) + nestedPayLoad.length() + 1);
                     elements.add(decodePayload(nestedType, nestedKeyName, nestedPayLoad));
                     
@@ -220,6 +219,7 @@ public class SNBTDecoder {
                 String Ori = SNBTPayload;
                 Ori = Ori.substring(3);
                 Ori = Ori.substring(0, Ori.length() - 1);
+                System.out.println(Ori);//TODO:delete
                 String[] bytearrS = Ori.split(",");
                 int len = bytearrS.length;
                 byte[] arr = new byte[len];

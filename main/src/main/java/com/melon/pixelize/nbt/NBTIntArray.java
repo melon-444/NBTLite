@@ -43,8 +43,10 @@ public class NBTIntArray extends NBTElement<int[]> {
     public String toString(){
         StringBuilder sb = new StringBuilder(keyName.isEmpty()?"":keyName+":");
         sb.append("[I;");
+        if(payLoad!=null)
         for(int e:payLoad)
             sb.append(e+",");
+        if(payLoad!=null&&payLoad.length!=0)
         sb.deleteCharAt(sb.length()-1);
         sb.append("]");
         return sb.toString();

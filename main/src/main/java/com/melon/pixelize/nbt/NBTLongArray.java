@@ -45,8 +45,10 @@ public class NBTLongArray extends NBTElement<long[]> {
     public String toString(){
         StringBuilder sb = new StringBuilder(keyName.isEmpty()?"":keyName+":");
         sb.append("[L;");
+        if(payLoad!=null)
         for(long e:payLoad)
             sb.append(e+",");
+        if(payLoad!=null&&payLoad.length!=0)
         sb.deleteCharAt(sb.length()-1);
         sb.append("]");
         return sb.toString();

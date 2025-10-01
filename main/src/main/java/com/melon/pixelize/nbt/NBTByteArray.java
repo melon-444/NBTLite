@@ -34,8 +34,10 @@ public class NBTByteArray extends NBTElement<byte[]> {
     public String toString(){
         StringBuilder sb = new StringBuilder(keyName.isEmpty()?"":keyName+":");
         sb.append("[B;");
+        if(payLoad!=null)
         for(byte e:payLoad)
             sb.append(e+",");
+        if(payLoad!=null&&payLoad.length!=0)
         sb.deleteCharAt(sb.length()-1);
         sb.append("]");
         return sb.toString();

@@ -28,14 +28,14 @@ public class NBTTest {
             .String("g","test")
             .Float("h",0.1f)
             .Double("i",0.2d)
-            .List(
+            .directList(
                 NBTObjectBuilder.buildList("j")
                 .String("test1")
                 .String("test2")
                 .String("t3")
                 .endList()
             )
-            .Compound(
+            .directCompound(
                 NBTObjectBuilder.buildCompound("k")
                 .String("nested","test")
                 .endCompound()

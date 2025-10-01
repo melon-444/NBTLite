@@ -10,23 +10,23 @@ public class NBTCompound extends NBTElement<List<NBTElement<?>>> implements root
     private boolean trasmitByNet = false;
 
     public NBTCompound(String keyName, List<NBTElement<?>> value) {
-        if(keyName == null)
+        if (keyName == null)
             keyName = "";
         this.keyName = keyName;
         this.keyNameLength = (short) keyName.getBytes().length;
         this.payLoad = new ArrayList<>(value);
     }
 
-    public NBTCompound(NBTElement<?>[] value) {
-        this(null,Arrays.asList(value));
+    public NBTCompound(NBTElement<?>... value) {
+        this(null, Arrays.asList(value));
     }
 
     public NBTCompound(List<NBTElement<?>> value) {
-        this(null,value);
+        this(null, value);
     }
 
-    public NBTCompound(String keyName, NBTElement<?>[] value) {
-        this(keyName,Arrays.asList(value));
+    public NBTCompound(String keyName, NBTElement<?>... value) {
+        this(keyName, Arrays.asList(value));
     }
 
     public NBTCompound(String keyName) {
@@ -93,12 +93,14 @@ public class NBTCompound extends NBTElement<List<NBTElement<?>>> implements root
     }
 
     @Override
-    public String toString(){
-        StringBuilder sb = new StringBuilder(keyName.isEmpty()?"":keyName+":");
+    public String toString() {
+        StringBuilder sb = new StringBuilder(keyName.isEmpty() ? "" : keyName + ":");
         sb.append("{");
-        for(NBTElement<?> e:payLoad)
-            sb.append(e+",");
-        sb.deleteCharAt(sb.length()-1);
+        if (payLoad != null && !payLoad.isEmpty()) {
+            for (NBTElement<?> e : payLoad)
+                sb.append(e + ",");
+            sb.deleteCharAt(sb.length() - 1);
+        }
         sb.append("}");
         return sb.toString();
     }

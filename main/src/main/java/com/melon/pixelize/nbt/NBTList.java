@@ -8,8 +8,8 @@ import java.util.List;
 public class NBTList extends NBTElement<List<NBTElement<?>>> implements rootElement {
 
     private byte type = 0;
-    
-    private void checkType(){
+
+    private void checkType() {
         type = payLoad != null && payLoad.size() > 0 ? payLoad.get(0).getType() : 0;
     }
 
@@ -21,7 +21,7 @@ public class NBTList extends NBTElement<List<NBTElement<?>>> implements rootElem
     }
 
     public NBTList(String keyName, List<NBTElement<?>> value) {
-        if(keyName == null)
+        if (keyName == null)
             keyName = "";
         this.keyName = keyName;
         this.keyNameLength = (short) keyName.getBytes().length;
@@ -29,11 +29,11 @@ public class NBTList extends NBTElement<List<NBTElement<?>>> implements rootElem
         boolean legalPayload = true;
         for (NBTElement<?> element : value)
             element.setKeyName("");
-        for (NBTElement<?> element : value){
-            if(element.getType()!=value.get(0).getType())
+        for (NBTElement<?> element : value) {
+            if (element.getType() != value.get(0).getType())
                 legalPayload = false;
         }
-            
+
         if (legalPayload) {
             this.payLoad = new ArrayList<>(value);
             checkType();
@@ -41,12 +41,12 @@ public class NBTList extends NBTElement<List<NBTElement<?>>> implements rootElem
             throw new IllegalArgumentException("The element type of a list should keep same.");
     }
 
-    public NBTList(String keyName, NBTElement<?>[] value) {
-        this(keyName,Arrays.asList(value));
+    public NBTList(String keyName, NBTElement<?>... value) {
+        this(keyName, Arrays.asList(value));
     }
 
-    public NBTList(NBTElement<?>[] value) {
-        this("",Arrays.asList(value));
+    public NBTList(NBTElement<?>... value) {
+        this("", Arrays.asList(value));
     }
 
     public NBTList(List<NBTElement<?>> value) {
@@ -60,11 +60,11 @@ public class NBTList extends NBTElement<List<NBTElement<?>>> implements rootElem
     @Override
     public void setPayLoad(List<NBTElement<?>> payLoad) {
         boolean legalPayload = true;
-        for (NBTElement<?> element : payLoad){
-            if(element.getType()!=payLoad.get(0).getType())
+        for (NBTElement<?> element : payLoad) {
+            if (element.getType() != payLoad.get(0).getType())
                 legalPayload = false;
         }
-            
+
         if (legalPayload) {
             this.payLoad = payLoad;
             checkType();
@@ -74,12 +74,10 @@ public class NBTList extends NBTElement<List<NBTElement<?>>> implements rootElem
     }
 
     public void addElement(NBTElement<?> element) {
-        if (payLoad.size() == 0 || payLoad.get(0).getType() == element.getType())
-            {
-                this.payLoad.add(element);
-                checkType();
-            }
-        else
+        if (payLoad.size() == 0 || payLoad.get(0).getType() == element.getType()) {
+            this.payLoad.add(element);
+            checkType();
+        } else
             throw new IllegalArgumentException("The element type of a list should keep same.");
     }
 
@@ -87,7 +85,7 @@ public class NBTList extends NBTElement<List<NBTElement<?>>> implements rootElem
         boolean success = this.payLoad.remove(element);
         checkType();
         return success;
-        
+
     }
 
     public boolean removeElement(String keyname) {
@@ -129,22 +127,22 @@ public class NBTList extends NBTElement<List<NBTElement<?>>> implements rootElem
         for (NBTElement<?> element : payLoad) {
             byte[] elementBytes = element.toBytes();
             int offset = elementPayLoadOffset(elementBytes, 0);
-            int actual_len = elementBytes.length-offset;
-            System.arraycopy(elementBytes, offset, result, index, actual_len);//only payload
+            int actual_len = elementBytes.length - offset;
+            System.arraycopy(elementBytes, offset, result, index, actual_len);// only payload
             index += actual_len;
         }
         return result;
     }
 
     @Override
-    public String toString(){
-        StringBuilder sb = new StringBuilder(keyName.isEmpty()?"":keyName+":");
+    public String toString() {
+        StringBuilder sb = new StringBuilder(keyName.isEmpty() ? "" : keyName + ":");
         sb.append("[");
-        if(payLoad!=null)
-        for(NBTElement<?> e:payLoad)
-            sb.append(e+",");
-        if(payLoad!=null&&!payLoad.isEmpty())
-            sb.deleteCharAt(sb.length()-1);
+        if (payLoad != null && !payLoad.isEmpty()) {
+            for (NBTElement<?> e : payLoad)
+                sb.append(e + ",");
+            sb.deleteCharAt(sb.length() - 1);
+        }
         sb.append("]");
         return sb.toString();
     }

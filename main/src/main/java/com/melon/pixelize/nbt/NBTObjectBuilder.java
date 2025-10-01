@@ -199,14 +199,14 @@ public class NBTObjectBuilder {
         return this;
     }
 
-    public NBTObjectBuilder Compound(NBTElement<?>... values) {
+    public NBTObjectBuilder anonymousCompound(NBTElement<?>... values) {
         checkBuilt();
         NBTCompound value = new NBTCompound(values);
         lastBuilt.addElement(value);
         return this;
     }
 
-    public NBTObjectBuilder List(NBTElement<?>... values) {
+    public NBTObjectBuilder anonymousList(NBTElement<?>... values) {
         checkBuilt();
         NBTList value = new NBTList(values);
         lastBuilt.addElement(value);

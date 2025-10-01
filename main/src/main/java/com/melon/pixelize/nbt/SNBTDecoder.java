@@ -137,9 +137,10 @@ public class SNBTDecoder {
             return SNBT.substring(startIndex, payLoadIndex + 1);
         } else if (c == '"' || c == '\'') {
             int startIndex = payLoadIndex;
+            char outerQuote = c;
             do {
                 c = SNBT.charAt(++payLoadIndex);
-            } while ((c != '"' && c != '\'') || ((c == '"' || c == '\'') && SNBT.charAt(payLoadIndex - 1) == '\\'));
+            } while ((c != outerQuote) || ((c == outerQuote) && SNBT.charAt(payLoadIndex - 1) == '\\'));
             return SNBT.substring(startIndex, payLoadIndex + 1);
         } else if (Character.isDigit(c)|| c == '.'  || c == '-' || c == '+') {
             int endIndex = payLoadIndex;
@@ -159,7 +160,7 @@ public class SNBTDecoder {
             else
                 return "false";
         } else
-            throw new IllegalArgumentException("Unsupported NBT type \"" + c+"\" at index "+payLoadIndex);
+            throw new IllegalArgumentException("Unsupported NBT type \"" + c+"\" at index "+payLoadIndex+"\n Original: "+SNBT);
     }
 
     private static NBTElement<?> decodePayload(byte type, String key, String SNBTPayload) {
@@ -202,8 +203,11 @@ public class SNBTDecoder {
             }
             case Type.COMPOUND: {
                 String Ori = SNBTPayload;
+                String snap = Ori;//TODO:delete test code
                 Ori = Ori.substring(1);
                 List<NBTElement<?>> elements = new ArrayList<>();
+                try {//TODO:delete test code
+                   
                 while (Ori.length() > 0) {
                     String nestedKeyName = getKeyName(Ori, 0);
                     String nestedPayLoad = getPayLoad(Ori, getPayLoadIndex(nestedKeyName));
@@ -212,6 +216,14 @@ public class SNBTDecoder {
                     elements.add(decodePayload(nestedType, nestedKeyName, nestedPayLoad));
                     
                 }
+
+                } catch (Exception e) {//TODO:delete test code
+                    String s = "";
+                    for(NBTElement<?> el:elements)
+                        s+=el.toString()+",";
+                    throw new RuntimeException(snap+" \n "+s);
+                }//TODO:delete test code
+
                 return new NBTCompound(key, elements);
             }
             case Type.BYTE_ARRAY: {
@@ -227,7 +239,6 @@ public class SNBTDecoder {
                 return new NBTByteArray(key, arr);
             }
             case Type.INT_ARRAY: {
-
                 String Ori = SNBTPayload;
                 Ori = Ori.substring(3);
                 Ori = Ori.substring(0, Ori.length() - 1);
@@ -250,7 +261,7 @@ public class SNBTDecoder {
                 return new NBTLongArray(key, arr);
             }
             default:
-                throw new IllegalArgumentException("Unsupported NBT type: " + type);
+                throw new IllegalArgumentException("Unsupported NBT type: " + type+"\n Original: "+SNBTPayload);
         }
     }
 

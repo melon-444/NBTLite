@@ -2,7 +2,7 @@ package com.melon.nbt;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class NBTObjectBuilder {
+public class NBTObjectBuilder implements Cloneable {
 
     private rootElement lastBuilt = null;
 
@@ -296,5 +296,20 @@ public class NBTObjectBuilder {
     private void checkBuilt() {
         if (lastBuilt == null)
             throw new IllegalStateException("Call build() before creating a new compound element");
+    }
+
+    @Override
+    public NBTObjectBuilder clone() throws CloneNotSupportedException {
+        NBTElement<?> copyLastbuilt = null;
+        NBTObjectBuilder copyBuilder = new NBTObjectBuilder();
+        if (lastBuilt instanceof NBTCompound result) {
+            copyLastbuilt = new NBTCompound(result.getKeyName(),result.getPayLoad());
+        }else if (lastBuilt instanceof NBTList result) {
+            copyLastbuilt = new NBTList(result.getKeyName(),result.getPayLoad());
+        }
+        
+        copyBuilder.lastBuilt = (rootElement)copyLastbuilt;
+        
+        return copyBuilder;
     }
 }

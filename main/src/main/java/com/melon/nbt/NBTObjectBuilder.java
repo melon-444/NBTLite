@@ -1,5 +1,7 @@
 package com.melon.nbt;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class NBTObjectBuilder {
 
     private rootElement lastBuilt = null;
@@ -225,14 +227,34 @@ public class NBTObjectBuilder {
         return this;
     }
 
+    public NBTObjectBuilder set(String keyName, NBTElement<?> element) {
+        checkBuilt();
+        lastBuilt.removeElement(keyName);
+        element.setKeyName(keyName);
+        lastBuilt.addElement(element);
+        return this;
+    }
+
+    public <T> NBTObjectBuilder set(String keyName,Class<NBTElement<T>> elementType, T value) {
+        checkBuilt();
+        lastBuilt.removeElement(keyName);
+        NBTElement<T> instance = null;
+        try {
+            instance = elementType.getDeclaredConstructor(String.class).newInstance(keyName);
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                | NoSuchMethodException | SecurityException e) {
+            e.printStackTrace();
+        }
+        instance.setPayLoad(value);
+        lastBuilt.addElement(instance);
+        return this;
+    }
+
     public NBTElement<?> end() {
         checkBuilt();
-        if (lastBuilt instanceof NBTCompound result) {
+        if (lastBuilt instanceof rootElement result) {
             lastBuilt = null;
-            return result;
-        } else if (lastBuilt instanceof NBTList result) {
-            lastBuilt = null;
-            return result;
+            return (NBTElement<?>)result;
         }
         throw new IllegalStateException("The result element isn't a root Element.");
     }
@@ -246,10 +268,26 @@ public class NBTObjectBuilder {
         throw new IllegalStateException("The result element isn't a Compound Element.");
     }
 
+    public NBTCompound toCompound(){
+        checkBuilt();
+        if (lastBuilt instanceof NBTCompound result) {
+            return result;
+        }
+        throw new IllegalStateException("The result element isn't a Compound Element.");
+    }
+
     public NBTList endList(){
         checkBuilt();
         if (lastBuilt instanceof NBTList result) {
             lastBuilt = null;
+            return result;
+        }
+        throw new IllegalStateException("The result element isn't a List Element.");
+    }
+
+    public NBTList toList(){
+        checkBuilt();
+        if (lastBuilt instanceof NBTList result) {
             return result;
         }
         throw new IllegalStateException("The result element isn't a List Element.");

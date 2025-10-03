@@ -235,7 +235,7 @@ public class NBTObjectBuilder {
         return this;
     }
 
-    public <T> NBTObjectBuilder set(String keyName,Class<NBTElement<T>> elementType, T value) {
+    public <T> NBTObjectBuilder set(String keyName,Class<? extends NBTElement<T>> elementType, T value) {
         checkBuilt();
         lastBuilt.removeElement(keyName);
         NBTElement<T> instance = null;

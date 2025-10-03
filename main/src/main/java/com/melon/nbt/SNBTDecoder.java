@@ -211,10 +211,9 @@ public class SNBTDecoder {
                     String nestedPayLoad = getPayLoad(Ori, getPayLoadIndex(nestedKeyName));
                     byte nestedType = getType(Ori, getPayLoadIndex(nestedKeyName));
                     Ori = Ori.substring(getPayLoadIndex(nestedKeyName) + nestedPayLoad.length() + 1);
-                    elements.add(decodePayload(nestedType, nestedKeyName, nestedPayLoad)); 
+                    elements.add(decodePayload(nestedType, nestedKeyName, nestedPayLoad));
+                    
                 }
-
-
 
                 return new NBTCompound(key, elements);
             }

@@ -240,11 +240,12 @@ public class NBTObjectBuilder {
         lastBuilt.removeElement(keyName);
         NBTElement<T> instance = null;
         try {
-            instance = elementType.getDeclaredConstructor(String.class,value.getClass()).newInstance(keyName,value);
+            instance = elementType.getDeclaredConstructor(value.getClass()).newInstance(value);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
                 | NoSuchMethodException | SecurityException e) {
             e.printStackTrace();
         }
+        instance.setKeyName(keyName);
         lastBuilt.addElement(instance);
         return this;
     }

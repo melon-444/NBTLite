@@ -300,7 +300,7 @@ public class NBTObjectBuilder implements Cloneable {
 
     @Override
     public NBTObjectBuilder clone() throws CloneNotSupportedException {
-        NBTElement<?> copyLastbuilt = null;
+        rootElement copyLastbuilt = null;
         NBTObjectBuilder copyBuilder = new NBTObjectBuilder();
         if (lastBuilt instanceof NBTCompound result) {
             copyLastbuilt = new NBTCompound(result.getKeyName(),result.getPayLoad());
@@ -308,7 +308,7 @@ public class NBTObjectBuilder implements Cloneable {
             copyLastbuilt = new NBTList(result.getKeyName(),result.getPayLoad());
         }
         
-        copyBuilder.lastBuilt = (rootElement)copyLastbuilt;
+        copyBuilder.lastBuilt = copyLastbuilt;
         
         return copyBuilder;
     }

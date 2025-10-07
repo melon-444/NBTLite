@@ -77,6 +77,14 @@ public abstract class NBTElement<T> {
         return keyName.isEmpty()?payLoad.toString():keyName+":"+payLoad.toString();
     }
 
+    public String toJsonString(){
+        String temp = keyName;
+        keyName = new NBTString(keyName).toString();
+        String result = this.toString();
+        keyName = temp;
+        return result;
+    }
+
     public static class Type {
         public static final byte END = 0;
         public static final byte BYTE = 1;

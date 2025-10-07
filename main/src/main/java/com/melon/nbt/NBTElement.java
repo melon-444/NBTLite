@@ -78,10 +78,8 @@ public abstract class NBTElement<T> {
     }
 
     public String toJsonString(){
-        String temp = keyName;
-        keyName = new NBTString(keyName).toString();
-        String result = this.toString();
-        keyName = temp;
+        
+        String result = new NBTString(keyName)+":"+payLoad.toString();
         return result;
     }
 

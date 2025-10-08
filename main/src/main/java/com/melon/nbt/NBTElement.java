@@ -1,6 +1,10 @@
 package com.melon.nbt;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
+
+import com.melon.nbt.interfac3.Copyable;
 
 /**
  * This is a recoding of Minecraft Java Edition Named Binary Tag (NBT) element
@@ -8,7 +12,7 @@ import java.nio.ByteBuffer;
  * @param <T> The type of the payload
  * @author melon_444
  */
-public abstract class NBTElement<T> {
+public abstract class NBTElement<T> implements Copyable {
     protected byte Type_ID;
 
     protected short keyNameLength;
@@ -74,12 +78,12 @@ public abstract class NBTElement<T> {
     }
 
     public String toString() {
-        return keyName.isEmpty()?payLoad.toString():keyName+":"+payLoad.toString();
+        return keyName.isEmpty() ? payLoad.toString() : keyName + ":" + payLoad.toString();
     }
 
-    public String toJsonString(){
-        
-        String result = new NBTString(keyName)+":"+payLoad.toString();
+    public String toJsonString() {
+
+        String result = new NBTString(keyName) + ":" + payLoad.toString();
         return result;
     }
 
@@ -99,4 +103,57 @@ public abstract class NBTElement<T> {
         public static final byte INT_ARRAY = 11;
         public static final byte LONG_ARRAY = 12;
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public NBTElement<T> copy() {
+        T obj = payLoad;
+        try {
+
+            if (obj == null)
+                return null;
+
+            // Don't copy box type and String
+            if (obj instanceof Number || obj instanceof String || obj instanceof Boolean
+                    || obj instanceof Character) {
+                return (NBTElement<T>) this.getClass().getDeclaredConstructor(String.class, payLoad.getClass())
+                        .newInstance(keyName, obj);
+            }
+
+            // Array copy
+            if (obj.getClass().isArray()) {
+                int length = Array.getLength(obj);
+                Object copy = Array.newInstance(obj.getClass().getComponentType(), length);
+                for (int i = 0; i < length; i++) {
+                    Object elem = Array.get(obj, i);
+                    if (elem instanceof Copyable e)
+                        Array.set(copy, i, e.copy()); // recursion deep copy
+                    else {
+                        Method m = obj.getClass().getDeclaredMethod("clone");
+                        m.setAccessible(true);
+                        Array.set(copy, i, m.invoke(obj));
+                    }
+                }
+                return (NBTElement<T>) this.getClass().getDeclaredConstructor(String.class, payLoad.getClass())
+                        .newInstance(keyName, (T) copy);
+            }
+
+            // if it use Copyable interface,use the method itself has.
+            if (obj instanceof Copyable c) {
+                return (NBTElement<T>) this.getClass().getDeclaredConstructor(String.class, payLoad.getClass())
+                        .newInstance(keyName, c.copy());
+            }
+
+            // else try clone()
+
+            Method m = obj.getClass().getDeclaredMethod("clone");
+            m.setAccessible(true);
+            return (NBTElement<T>) this.getClass().getDeclaredConstructor(String.class, payLoad.getClass())
+                    .newInstance(keyName, (T) m.invoke(obj));
+        } catch (Exception e) {
+            // fallback
+            throw new UnsupportedOperationException("Cannot copy " + obj.getClass(), e);
+        }
+    }
+
 }

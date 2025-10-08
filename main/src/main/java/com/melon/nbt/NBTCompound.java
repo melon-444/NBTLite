@@ -5,7 +5,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-public class NBTCompound extends NBTElement<List<NBTElement<?>>> implements rootElement {
+import com.melon.nbt.interfac3.RootElement;
+
+public class NBTCompound extends NBTElement<List<NBTElement<?>>> implements RootElement {
 
     private boolean trasmitByNet = false;
 

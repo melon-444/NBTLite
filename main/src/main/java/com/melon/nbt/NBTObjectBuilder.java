@@ -1,10 +1,15 @@
 package com.melon.nbt;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class NBTObjectBuilder implements Cloneable {
+import com.melon.nbt.interfac3.Copyable;
+import com.melon.nbt.interfac3.RootElement;
 
-    private rootElement lastBuilt = null;
+public class NBTObjectBuilder implements Copyable {
+
+    private RootElement lastBuilt = null;
 
     private NBTObjectBuilder() {
     }
@@ -235,7 +240,7 @@ public class NBTObjectBuilder implements Cloneable {
         return this;
     }
 
-    public <T> NBTObjectBuilder set(String keyName,Class<? extends NBTElement<T>> elementType, T value) {
+    public <T> NBTObjectBuilder set(String keyName, Class<? extends NBTElement<T>> elementType, T value) {
         checkBuilt();
         lastBuilt.removeElement(keyName);
         NBTElement<T> instance = null;
@@ -252,14 +257,14 @@ public class NBTObjectBuilder implements Cloneable {
 
     public NBTElement<?> end() {
         checkBuilt();
-        if (lastBuilt instanceof rootElement result) {
+        if (lastBuilt instanceof RootElement result) {
             lastBuilt = null;
-            return (NBTElement<?>)result;
+            return (NBTElement<?>) result;
         }
         throw new IllegalStateException("The result element isn't a root Element.");
     }
 
-    public NBTCompound endCompound(){
+    public NBTCompound endCompound() {
         checkBuilt();
         if (lastBuilt instanceof NBTCompound result) {
             lastBuilt = null;
@@ -268,7 +273,7 @@ public class NBTObjectBuilder implements Cloneable {
         throw new IllegalStateException("The result element isn't a Compound Element.");
     }
 
-    public NBTCompound toCompound(){
+    public NBTCompound toCompound() {
         checkBuilt();
         if (lastBuilt instanceof NBTCompound result) {
             return result;
@@ -276,7 +281,7 @@ public class NBTObjectBuilder implements Cloneable {
         throw new IllegalStateException("The result element isn't a Compound Element.");
     }
 
-    public NBTList endList(){
+    public NBTList endList() {
         checkBuilt();
         if (lastBuilt instanceof NBTList result) {
             lastBuilt = null;
@@ -285,7 +290,7 @@ public class NBTObjectBuilder implements Cloneable {
         throw new IllegalStateException("The result element isn't a List Element.");
     }
 
-    public NBTList toList(){
+    public NBTList toList() {
         checkBuilt();
         if (lastBuilt instanceof NBTList result) {
             return result;
@@ -299,17 +304,26 @@ public class NBTObjectBuilder implements Cloneable {
     }
 
     @Override
-    public NBTObjectBuilder clone() throws CloneNotSupportedException {
-        rootElement copyLastbuilt = null;
+    public NBTObjectBuilder copy() {
         NBTObjectBuilder copyBuilder = new NBTObjectBuilder();
+        RootElement copyLastBuilt = null;
+
         if (lastBuilt instanceof NBTCompound result) {
-            copyLastbuilt = new NBTCompound(result.getKeyName(),result.getPayLoad());
-        }else if (lastBuilt instanceof NBTList result) {
-            copyLastbuilt = new NBTList(result.getKeyName(),result.getPayLoad());
+            List<NBTElement<?>> newPayload = new ArrayList<>();
+            for (NBTElement<?> elem : result.getPayLoad()) {
+                newPayload.add((NBTElement<?>) elem.copy()); // 确保NBTElement可clone
+            }
+            copyLastBuilt = new NBTCompound(result.getKeyName(), newPayload);
+
+        } else if (lastBuilt instanceof NBTList result) {
+            List<NBTElement<?>> newPayload = new ArrayList<>();
+            for (NBTElement<?> elem : result.getPayLoad()) {
+                newPayload.add((NBTElement<?>) elem.copy());
+            }
+            copyLastBuilt = new NBTList(result.getKeyName(), newPayload);
         }
-        
-        copyBuilder.lastBuilt = copyLastbuilt;
-        
+
+        copyBuilder.lastBuilt = copyLastBuilt;
         return copyBuilder;
     }
 }

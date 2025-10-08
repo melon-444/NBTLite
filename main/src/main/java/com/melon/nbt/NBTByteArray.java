@@ -3,11 +3,7 @@ package com.melon.nbt;
 public class NBTByteArray extends NBTElement<byte[]> {
 
     public NBTByteArray(String keyName, byte[] payLoad) {
-        if(keyName == null)
-            keyName = "";
-        this.keyName = keyName;
-        this.keyNameLength = (short) keyName.getBytes().length;
-        this.payLoad = payLoad;
+        super(keyName, payLoad);
     }
 
     public NBTByteArray(byte[] payLoad) {

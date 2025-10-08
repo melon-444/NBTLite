@@ -1,6 +1,8 @@
-package com.melon.nbt;
+package com.melon.nbt.interfac3;
 
-public interface rootElement {
+import com.melon.nbt.NBTElement;
+
+public interface RootElement {
     public boolean removeElement(String keyname);
     public boolean removeElement(NBTElement<?> element);
     public void addElement(NBTElement<?> element);

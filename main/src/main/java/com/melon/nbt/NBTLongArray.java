@@ -3,11 +3,7 @@ package com.melon.nbt;
 public class NBTLongArray extends NBTElement<long[]> {
 
     public NBTLongArray(String keyName, long[] payLoad) {
-        if(keyName == null)
-            keyName = "";
-        this.keyName = keyName;
-        this.keyNameLength = (short) keyName.getBytes().length;
-        this.payLoad = payLoad;
+        super(keyName, payLoad);
     }
 
     public NBTLongArray(long[] value) {

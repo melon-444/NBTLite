@@ -9,6 +9,10 @@ public class NBTBoolean extends NBTByte {
         super(name, (byte) (value ? 1 : 0));
     }
 
+    public NBTBoolean(String keyName, Boolean value) {
+        super(keyName, (byte)(value? 1:0));
+    }
+
     public NBTBoolean(boolean value) {
         super(null, (byte) (value ? 1 : 0));
     }

@@ -10,6 +10,10 @@ public class NBTLong extends NBTElement<Long> {
         this.payLoad = value;
     }
 
+    public NBTLong(String keyName, Long value) {
+        super(keyName, value);
+    }
+
     public NBTLong(long value) {
         this(null, value);
     }

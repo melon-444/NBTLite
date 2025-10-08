@@ -10,6 +10,10 @@ public class NBTDouble extends NBTElement<Double> {
         this.payLoad = value;
     }
 
+    public NBTDouble(String keyName, Double value) {
+        super(keyName, value);
+    }
+
     public NBTDouble(double value) {
         this(null, value);
     }

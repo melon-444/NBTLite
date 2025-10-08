@@ -10,6 +10,10 @@ public class NBTInt extends NBTElement<Integer> {
         this.payLoad = value;
     }
 
+    public NBTInt(String keyName, Integer value) {
+        super(keyName, value);
+    }
+
     public NBTInt(int value) {
         this(null, value);
     }

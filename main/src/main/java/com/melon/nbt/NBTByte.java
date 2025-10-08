@@ -10,6 +10,10 @@ public class NBTByte extends NBTElement<Byte> {
         this.payLoad = value;
     }
 
+    public NBTByte(String keyName, Byte value) {
+        super(keyName, value);
+    }
+
     public NBTByte(byte value) {
         this(null, value);
     }

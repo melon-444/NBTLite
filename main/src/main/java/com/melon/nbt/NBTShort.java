@@ -9,6 +9,10 @@ public class NBTShort extends NBTElement<Short> {
         this.keyNameLength = (short) keyName.getBytes().length;
         this.payLoad = value;
     }
+    
+    public NBTShort(String keyName, Short value) {
+        super(keyName, value);
+    }
 
     public NBTShort(short value) {
         this(null, value);

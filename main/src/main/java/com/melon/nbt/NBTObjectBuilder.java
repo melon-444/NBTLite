@@ -1,8 +1,6 @@
 package com.melon.nbt;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.melon.nbt.interfac3.Copyable;
 import com.melon.nbt.interfac3.RootElement;
@@ -309,18 +307,9 @@ public class NBTObjectBuilder implements Copyable {
         RootElement copyLastBuilt = null;
 
         if (lastBuilt instanceof NBTCompound result) {
-            List<NBTElement<?>> newPayload = new ArrayList<>();
-            for (NBTElement<?> elem : result.getPayLoad()) {
-                newPayload.add((NBTElement<?>) elem.copy()); // 确保NBTElement可clone
-            }
-            copyLastBuilt = new NBTCompound(result.getKeyName(), newPayload);
-
+            copyLastBuilt = (RootElement)(NBTCompound)result.copy();
         } else if (lastBuilt instanceof NBTList result) {
-            List<NBTElement<?>> newPayload = new ArrayList<>();
-            for (NBTElement<?> elem : result.getPayLoad()) {
-                newPayload.add((NBTElement<?>) elem.copy());
-            }
-            copyLastBuilt = new NBTList(result.getKeyName(), newPayload);
+            copyLastBuilt = (RootElement)(NBTList)result.copy();
         }
 
         copyBuilder.lastBuilt = copyLastBuilt;

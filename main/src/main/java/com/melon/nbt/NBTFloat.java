@@ -10,6 +10,10 @@ public class NBTFloat extends NBTElement<Float> {
         this.payLoad = value;
     }
 
+    public NBTFloat(String keyName, Float value) {
+        super(keyName, value);
+    }
+
     public NBTFloat(float value) {
         this(null, value);
     }

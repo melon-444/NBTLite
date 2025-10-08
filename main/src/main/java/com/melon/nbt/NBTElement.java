@@ -110,9 +110,6 @@ public abstract class NBTElement<T> implements Copyable {
         T obj = payLoad;
         try {
 
-            if (obj == null)
-                return null;
-
             // Don't copy box type and String
             if (obj instanceof Number || obj instanceof String || obj instanceof Boolean
                     || obj instanceof Character) {
@@ -138,6 +135,24 @@ public abstract class NBTElement<T> implements Copyable {
                         .newInstance(keyName, (T) copy);
             }
 
+            // Collection copy
+            if (obj instanceof java.util.Collection) {
+                java.util.Collection<?> col = (java.util.Collection<?>) obj;
+                java.util.Collection<Object> copy = col instanceof java.util.List ? new java.util.ArrayList<>()
+                        : new java.util.HashSet<>();
+                for (Object elem : col) {
+                    if (elem instanceof Copyable e)
+                        copy.add(e.copy()); // recursion deep copy
+                    else {
+                        Method m = obj.getClass().getDeclaredMethod("clone");
+                        m.setAccessible(true);
+                        copy.add(m.invoke(obj));
+                    }
+                }
+                return (NBTElement<T>) this.getClass().getDeclaredConstructor(String.class, payLoad.getClass())
+                        .newInstance(keyName, (T) copy);
+            }
+
             // if it use Copyable interface,use the method itself has.
             if (obj instanceof Copyable c) {
                 return (NBTElement<T>) this.getClass().getDeclaredConstructor(String.class, payLoad.getClass())
@@ -145,7 +160,6 @@ public abstract class NBTElement<T> implements Copyable {
             }
 
             // else try clone()
-
             Method m = obj.getClass().getDeclaredMethod("clone");
             m.setAccessible(true);
             return (NBTElement<T>) this.getClass().getDeclaredConstructor(String.class, payLoad.getClass())
